@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                /* Adiciona um filtro escuro sobre a imagem para destacar o formulário */
+                background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("images.jfif") no-repeat center center fixed;
+                background-size: cover;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                min-height: 100vh; /* Garante altura mínima para evitar cortes em telas pequenas */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .botao-login {
+                background-color: rgb(228, 12, 12);
+                color: white;
+                padding: 14px 20px;
+                text-align: center;
+                text-decoration: none;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                border-radius: 5px;
+                border: none;
+                width: 100%;
+                box-sizing: border-box;
+                transition: all 0.3s ease;
+                margin-top: 10px;
+            }
+
+            .botao-login:hover {
+                background-color: rgb(180, 10, 10);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 8px rgba(228, 12, 12, 0.3);
+            }
+
+            .login-container {
+                background: white;
+                padding: 40px;
+                border-radius: 8px;
+                box-shadow: 0 15px 35px rgba(0,0,0,0.3); /* Sombra mais suave e difusa */
+                text-align: center;
+                width: 100%;
+                max-width: 400px;
+                box-sizing: border-box;
+            }
+
+            .login-container h2 {
+                margin-top: 10px;
+                margin-bottom: 30px;
+                color: #333;
+                font-weight: 400;
+            }
+
+            .login-container input {
+                width: 100%;
+                padding: 14px;
+                margin-bottom: 15px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                background-color: #f9f9f9;
+                box-sizing: border-box; /* Garante que o padding não altere a largura */
+                font-size: 16px; /* Melhor leitura e evita zoom no iOS */
+                transition: all 0.3s;
+            }
+
+            .login-container input:focus {
+                outline: none;
+                border-color: rgb(228, 12, 12);
+                background-color: white;
+                box-shadow: 0 0 0 4px rgba(228, 12, 12, 0.1);
+            }
+
+            .texto-cadastro {
+                margin-top: 25px;
+                font-size: 14px;
+                color: #666;
+            }
+
+            .texto-cadastro a {
+                color: rgb(228, 12, 12);
+                text-decoration: none;
+                font-weight: 600;
+            }
+
+            .texto-cadastro a:hover {
+                text-decoration: underline;
+            }
+
+            /* Estilo do Logo */
+            .logo {
+                font-size: 28px;
+                font-weight: bold;
+                color: #333;
+                margin-bottom: 5px;
+                display: block;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            .logo span {
+                color: rgb(228, 12, 12);
+            }
+
+            @media (max-width: 480px) {
+                .login-container {
+                    padding: 20px;
+                    width: 90%;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="login-container">
+            <div class="logo"><span>J</span>-Imports</div>
+            
+            <h2>Login</h2>
+            <input type="text" id="login-user" placeholder="Nome de usuário ou E-mail">
+            <input type="password" id="login-pass" placeholder="Senha">
+            <button class="botao-login" id="login-btn">Entrar</button>
+            <p class="texto-cadastro">
+                Não tem uma conta? <a href="cadastro.html">Cadastre-se</a>
+            </p>
+        </div>
+
+        <script>
+            document.getElementById('login-btn').addEventListener('click', function() {
+                const userLogin = document.getElementById('login-user').value;
+                const passLogin = document.getElementById('login-pass').value;
+
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+
+                const validUser = users.find(user => 
+                    (user.username === userLogin || user.email === userLogin) && user.password === passLogin
+                );
+
+                if (validUser) {
+                    // Salva o usuário atual na sessão
+                    localStorage.setItem('currentUser', validUser.username);
+
+                    // Adiciona o usuário à lista de online
+                    let onlineUsers = JSON.parse(localStorage.getItem('onlineUsers')) || [];
+                    if (!onlineUsers.includes(validUser.username)) {
+                        onlineUsers.push(validUser.username);
+                        localStorage.setItem('onlineUsers', JSON.stringify(onlineUsers));
+                    }
+                    window.location.href = 'home.html';
+                } else {
+                    alert('Usuário ou senha incorretos!');
+                }
+            });
+        </script>
+    </body> 
+
+</html>

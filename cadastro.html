@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("images.jfif") no-repeat center center fixed;
+                background-size: cover;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .botao-login {
+                background-color: rgb(228, 12, 12);
+                color: white;
+                padding: 14px 20px;
+                text-align: center;
+                text-decoration: none;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                border-radius: 5px;
+                border: none;
+                width: 100%;
+                box-sizing: border-box;
+                transition: all 0.3s ease;
+                margin-top: 10px;
+            }
+
+            .botao-login:hover {
+                background-color: rgb(180, 10, 10);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 8px rgba(228, 12, 12, 0.3);
+            }
+
+            .login-container {
+                background: white;
+                padding: 40px;
+                border-radius: 8px;
+                box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+                text-align: center;
+                width: 100%;
+                max-width: 400px;
+                box-sizing: border-box;
+            }
+
+            .login-container h2 {
+                margin-top: 10px;
+                margin-bottom: 30px;
+                color: #333;
+                font-weight: 400;
+            }
+
+            .login-container input {
+                width: 100%;
+                padding: 14px;
+                margin-bottom: 15px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                background-color: #f9f9f9;
+                box-sizing: border-box; /* Garante que o padding não altere a largura */
+                font-size: 1all 0.3s;
+            }
+
+            .login-container input:focus {
+                outline: none;
+                border-color: rgb(228, 12, 12);
+                background-color: white;
+                box-shadow: 0 0 0 4px rgba(228, 12, 12, 0.1);
+            }
+
+            .texto-cadastro {
+                margin-top: 25px;
+                font-size: 14px;
+                color: #666;
+            }
+
+            .texto-cadastro a {
+                color: rgb(228, 12, 12);
+                text-decoration: none;
+                font-weight: 600;
+            }
+
+            .texto-cadastro a:hover {
+                text-decoration: underline;
+            }
+
+            /* Estilo do Logo */
+            .logo {
+                font-size: 28px;
+                font-weight: bold;
+                color: #333;
+                margin-bottom: 5px;
+                display: block;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            .logo span {
+                color: rgb(228, 12, 12);
+            }
+
+            @media (max-width: 480px) {
+                .login-container {
+                    padding: 20px;
+                    width: 90%;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="login-container">
+            <div class="logo"><span>J</span>-Imports</div>
+            <h2>Criar Conta</h2>
+            <input type="text" id="username" placeholder="Nome de usuário" required>
+            <input type="email" id="email" placeholder="E-mail" required>
+            <input type="password" id="password" placeholder="Senha" required>
+            <input type="password" id="confirm-password" placeholder="Confirmar Senha" required>
+            <button class="botao-login" id="register-button">Cadastrar</button>
+            <p class="texto-cadastro">
+                Já tem uma conta? <a href="Untitled-1.html">Faça Login</a>
+            </p>
+        </div>
+
+        <script>
+            // 1. Pega o botão de cadastro pelo seu ID
+            const registerButton = document.getElementById('register-button');
+
+            // 2. Adiciona um "ouvinte" que espera por um clique no botão
+            registerButton.addEventListener('click', function() {
+                // 3. Quando o botão é clicado, pega os valores dos campos
+                const username = document.getElementById('username').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+
+                // 4. Validações básicas
+                if (!username || !email || !password || !confirmPassword) {
+                    alert('Por favor, preencha todos os campos.');
+                    return; // Para a execução se algum campo estiver vazio
+                }
+
+                if (password !== confirmPassword) {
+                    alert('As senhas não coincidem!');
+                    return; // Para a execução se as senhas forem diferentes
+                }
+
+                // 5. Pega a lista de usuários do localStorage ou cria uma lista vazia
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+
+                // 6. Cria um objeto para o novo usuário
+                const newUser = { username, email, password }; // Usamos a forma curta: { username: username, ... }
+
+                // 7. Adiciona o novo usuário à lista
+                users.push(newUser);
+
+                // 8. Salva a lista atualizada de volta no localStorage
+                localStorage.setItem('users', JSON.stringify(users));
+
+                alert('Usuário cadastrado com sucesso! Você será redirecionado para a tela de login.');
+                window.location.href = 'Untitled-1.html'; // Redireciona para a página de login
+            });
+        </script>
+    </body> 
+
+</html>
