@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                background: url("images.jfif") no-repeat center center fixed;
+                background-size: cover;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+            
+            .container {
+                background-color: rgba(255, 255, 255, 0.95);
+                width: 80%;
+                max-width: 800px;
+                margin: 50px auto;
+                padding: 30px;
+                border-radius: 25px;
+                box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+                backdrop-filter: blur(5px); /* Efeito de vidro fosco */
+                position: relative;
+            }
+
+            h1 {
+                text-align: center;
+                color: #333;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                margin-bottom: 30px;
+            }
+
+            .form-group {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 20px;
+                flex-wrap: wrap;
+            }
+
+            input {
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                flex: 1;
+                transition: all 0.3s;
+            }
+
+            input:focus {
+                border-color: rgb(228, 12, 12);
+                outline: none;
+                box-shadow: 0 0 8px rgba(228, 12, 12, 0.3);
+            }
+
+            button {
+                padding: 10px 20px;
+                background-color: rgb(228, 12, 12);
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-weight: bold;
+                transition: transform 0.2s, background-color 0.3s;
+            }
+
+            button:hover {
+                background-color: rgb(180, 10, 10);
+                transform: scale(1.05); /* Aumenta levemente o botão */
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+                background-color: white;
+                border-radius: 10px;
+                overflow: hidden; /* Arredonda os cantos da tabela */
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+
+            th, td {
+                padding: 12px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+
+            th {
+                background-color: #333;
+                color: white;
+                text-transform: uppercase;
+                font-size: 14px;
+            }
+
+            tr:hover {
+                background-color: #f5f5f5; /* Destaca a linha ao passar o mouse */
+            }
+
+            /* Estilos para o botão de ajuda e a janela de informações */
+            .btn-ajuda {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                background-color: #007BFF; /* Azul para diferenciar do botão vermelho */
+                color: white;
+                border-radius: 50%; /* Faz ficar redondo */
+                text-align: center;
+                font-size: 24px;
+                font-weight: bold;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+                z-index: 1000;
+                padding: 0; /* Remove o padding padrão */
+                line-height: 50px; /* Centraliza o texto verticalmente */
+            }
+
+            .btn-ajuda:hover {
+                background-color: #0056b3; /* Azul mais escuro ao passar o mouse */
+            }
+
+            .modal-ajuda {
+                display: none; /* Começa escondido */
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0,0,0,0.5); /* Fundo escuro transparente */
+                z-index: 1001;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .modal-conteudo {
+                background-color: white;
+                padding: 25px;
+                border-radius: 15px;
+                width: 90%; /* Adaptável ao celular */
+                max-width: 300px;
+                text-align: center;
+            }
+
+            /* Modal de formulário para adicionar carro */
+            .modal-form {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0,0,0,0.5);
+                z-index: 1002;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .modal-form-conteudo {
+                background-color: white;
+                padding: 30px;
+                border-radius: 15px;
+                width: 90%; /* Adaptável ao celular */
+                max-width: 400px;
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            textarea {
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                resize: vertical;
+                font-family: inherit;
+            }
+
+            /* Área de Usuários Online */
+            .online-area {
+                margin-top: 30px;
+                padding-top: 20px;
+                border-top: 1px solid #ddd;
+            }
+            
+            .online-title {
+                font-size: 18px;
+                color: #333;
+                margin-bottom: 10px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .user-badge {
+                display: inline-block;
+                background-color: #e8f5e9;
+                color: #2e7d32;
+                padding: 5px 10px;
+                border-radius: 15px;
+                font-size: 14px;
+                margin-right: 5px;
+                margin-bottom: 5px;
+                border: 1px solid #c8e6c9;
+            }
+
+            .status-dot {
+                height: 10px;
+                width: 10px;
+                background-color: #4caf50;
+                border-radius: 50%;
+                display: inline-block;
+                margin-right: 5px;
+            }
+
+            .btn-sair {
+                background-color: #dc3545;
+                position: absolute;
+                top: 30px;
+                right: 30px;
+            }
+            .btn-sair:hover {
+                background-color: #c82333;
+            }
+
+            /* Estilos para Mobile */
+            @media (max-width: 768px) {
+                .container {
+                    width: 95%;
+                    padding: 15px;
+                    margin: 20px auto;
+                }
+                .form-group {
+                    flex-direction: column; /* Empilha os inputs */
+                }
+                .btn-sair {
+                    top: 10px;
+                    right: 15px;
+                    padding: 8px 12px; /* Área de toque maior */
+                    font-size: 14px;
+                }
+                h1 {
+                    font-size: 24px;
+                    margin-top: 40px; /* Espaço extra para não bater no botão sair */
+                }
+                /* Botões e Inputs maiores para o dedo */
+                .form-group button {
+                    width: 100%;
+                    padding: 15px;
+                }
+                input, select, textarea {
+                    font-size: 16px; /* Evita zoom automático no iPhone */
+                    padding: 12px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <button class="btn-sair" onclick="logout()">Sair</button>
+            <h1><span style="color: rgb(228, 12, 12);">J</span>-Imports</h1>
+            
+            <div class="form-group">
+                <input type="text" id="filtro" placeholder="🔍 Pesquisar carro em tempo real..." style="border-color: #007BFF;">
+                <button onclick="toggleModalCarro()" style="background-color: #28a745; flex: 0 0 auto;">+ Adicionar Carro</button>
+            </div>
+
+            <div style="overflow-x: auto;"> <!-- Permite rolagem lateral na tabela -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Data de Entrada</th>
+                            <th>Placa</th>
+                            <th>Defeito/Obs</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-carros">
+                        <!-- Carros serão listados aqui -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="online-area">
+                <div class="online-title"><span class="status-dot"></span> Usuários Online Agora</div>
+                <div id="lista-online"></div>
+            </div>
+        </div>
+
+        <!-- Botão de Ajuda (?) -->
+        <button class="btn-ajuda" onclick="toggleAjuda()">?</button>
+
+        <!-- Modal para Adicionar Carro -->
+        <div id="modal-carro" class="modal-form">
+            <div class="modal-form-conteudo">
+                <h2 style="text-align: center; margin-top: 0; color: #333;">Novo Carro</h2>
+                <input type="text" id="marca" placeholder="Marca">
+                <input type="text" id="modelo" placeholder="Modelo">
+                <input type="date" id="dataEntrada" placeholder="Data de Entrada">
+                <input type="text" id="placa" placeholder="Placa">
+                <textarea id="defeito" rows="3" placeholder="O que deu no carro? (Defeito/Obs)"></textarea>
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button onclick="toggleModalCarro()" style="background-color: #6c757d;">Cancelar</button>
+                    <button id="btn-salvar-carro">Salvar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Janela de Instruções -->
+        <div id="modal-ajuda" class="modal-ajuda" onclick="toggleAjuda()">
+            <div class="modal-conteudo">
+                <h3>Como usar o Sistema</h3>
+                <p style="text-align: left; line-height: 1.6;">
+                    1. Clique no botão <b>Adicionar Carro</b>.<br>
+                    2. Preencha os dados e o defeito do carro.<br>
+                    3. Clique no <b>X</b> vermelho para remover.<br>
+                </p>
+                <p style="font-size: 12px; color: #666; margin-top: 20px;">(Clique na tela para fechar)</p>
+            </div>
+        </div>
+
+        <script>
+            // Funções para gerenciar o estoque
+            document.addEventListener('DOMContentLoaded', carregarCarros);
+            
+            // Atualiza a tabela em tempo real se houver mudanças em outra aba do navegador
+            window.addEventListener('storage', function(event) {
+                if (event.key === 'estoqueCarros') {
+                    carregarCarros();
+                }
+            });
+
+            document.getElementById('btn-salvar-carro').addEventListener('click', function() {
+                const marca = document.getElementById('marca').value;
+                const modelo = document.getElementById('modelo').value;
+                const dataEntrada = document.getElementById('dataEntrada').value;
+                const placa = document.getElementById('placa').value;
+                const defeito = document.getElementById('defeito').value;
+
+                if (!marca || !modelo || !dataEntrada || !placa) {
+                    alert("Preencha todos os campos!");
+                    return;
+                }
+
+                const carro = { marca, modelo, dataEntrada, placa, defeito };
+                
+                // Salvar no localStorage (chave 'estoqueCarros')
+                let estoque = JSON.parse(localStorage.getItem('estoqueCarros')) || [];
+                estoque.push(carro);
+                localStorage.setItem('estoqueCarros', JSON.stringify(estoque));
+
+                // Limpar campos
+                document.getElementById('marca').value = '';
+                document.getElementById('modelo').value = '';
+                document.getElementById('dataEntrada').value = '';
+                document.getElementById('placa').value = '';
+                document.getElementById('defeito').value = '';
+
+                toggleModalCarro(); // Fecha o modal após salvar
+                carregarCarros();
+            });
+
+            function carregarCarros() {
+                const tbody = document.getElementById('tabela-carros');
+                tbody.innerHTML = '';
+                
+                let estoque = JSON.parse(localStorage.getItem('estoqueCarros')) || [];
+
+                estoque.forEach((carro, index) => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${carro.marca}</td>
+                        <td>${carro.modelo}</td>
+                        <td>${carro.dataEntrada ? carro.dataEntrada.split('-').reverse().join('/') : ''}</td>
+                        <td>${carro.placa}</td>
+                        <td>${carro.defeito || '-'}</td>
+                        <td><button onclick="removerCarro(${index})" style="background-color: #ff4444; padding: 5px 10px;">X</button></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            // Função para remover um carro da lista
+            window.removerCarro = function(index) {
+                let estoque = JSON.parse(localStorage.getItem('estoqueCarros')) || [];
+                estoque.splice(index, 1);
+                localStorage.setItem('estoqueCarros', JSON.stringify(estoque));
+                carregarCarros();
+            }
+
+            // Função de pesquisa em tempo real (filtra enquanto digita)
+            document.getElementById('filtro').addEventListener('input', function() {
+                const termo = this.value.toLowerCase();
+                const linhas = document.querySelectorAll('#tabela-carros tr');
+
+                linhas.forEach(linha => {
+                    const textoLinha = linha.textContent.toLowerCase();
+                    if (textoLinha.includes(termo)) {
+                        linha.style.display = '';
+                    } else {
+                        linha.style.display = 'none';
+                    }
+                });
+            });
+
+            // Verifica se tem usuário logado
+            function verificarLogin() {
+                const currentUser = localStorage.getItem('currentUser');
+                if (!currentUser) {
+                    // Se não tiver logado, manda pro login
+                    window.location.href = 'Untitled-1.html';
+                }
+            }
+
+            // Carrega usuários online
+            function carregarOnline() {
+                const divLista = document.getElementById('lista-online');
+                const onlineUsers = JSON.parse(localStorage.getItem('onlineUsers')) || [];
+                
+                divLista.innerHTML = '';
+                onlineUsers.forEach(user => {
+                    const span = document.createElement('span');
+                    span.className = 'user-badge';
+                    span.innerHTML = `<span class="status-dot"></span>${user}`;
+                    divLista.appendChild(span);
+                });
+            }
+
+            // Função de Logout
+            window.logout = function() {
+                const currentUser = localStorage.getItem('currentUser');
+                let onlineUsers = JSON.parse(localStorage.getItem('onlineUsers')) || [];
+                
+                // Remove o usuário da lista
+                onlineUsers = onlineUsers.filter(u => u !== currentUser);
+                localStorage.setItem('onlineUsers', JSON.stringify(onlineUsers));
+                localStorage.removeItem('currentUser');
+                
+                window.location.href = 'Untitled-1.html';
+            }
+
+            // Função para abrir e fechar a ajuda
+            window.toggleAjuda = function() {
+                const modal = document.getElementById('modal-ajuda');
+                if (modal.style.display === 'flex') {
+                    modal.style.display = 'none';
+                } else {
+                    modal.style.display = 'flex';
+                }
+            }
+
+            // Função para abrir e fechar o modal de novo carro
+            window.toggleModalCarro = function() {
+                const modal = document.getElementById('modal-carro');
+                if (modal.style.display === 'flex') {
+                    modal.style.display = 'none';
+                } else {
+                    modal.style.display = 'flex';
+                }
+            }
+        </script>
+    </body>
+</html>
